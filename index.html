@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Calculator</title>
 </head>
 
@@ -23,8 +24,8 @@ body{
 #calculator{
     background-color: hsl(0, 0%, 15%);
     border-radius: 15px;
-    max-width: 800px;
-    max-height: 800px;
+    max-width: 500px;
+    max-height: 520px;
     height: 100%;
     overflow: hidden;
     width: 100%;
@@ -51,15 +52,15 @@ body{
 #keys{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-    padding: 25px;
+    gap: 20px;
+    padding: 10px;
     box-sizing: border-box;
 }
 
 button{
-    width: 150px;
-    height: 100px;
-    border-radius: 50px;
+    width: 100px;
+    height: 55px;
+    border-radius: 10px;
     border: none;
     background-color: hsl(0, 0%, 30%);
     color: white;
@@ -80,10 +81,11 @@ button:active{
 }
 
 .operator-btn{
-    background-color: hsl(35, 100%, 55%);
+    color: #D2691E;
 }
 
 .operator-btn:hover{
+    
     background-color: hsl(35, 100%, 65%);
 }
 
@@ -107,14 +109,14 @@ button:active{
     position: absolute;
     background-color: hsl(0, 0%, 15%);
     border-radius: 15px;
-    max-width: 550px;
+    max-width: 400px;
     width: 100%;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     display: none;
     color: white;
     text-align: center;
     height: 100%;
-    max-height: 500px;
+    max-height: 400px;
     left: 830px;
     font-size: 1.5em;
 }
@@ -125,6 +127,32 @@ button:active{
 
 .historylist{
     font-size: 1em;
+}
+
+.gif-container {
+    display: flex;
+    position: absolute;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.gif-container .hacker-panda {
+    position: absolute;
+    height: 100px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    left: 415px;
+    top: -300px;
+}
+
+.gif-container .dance-panda {
+    position: absolute;
+    height: 100px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    right: 390px;
+    top: 200px;
 }
 
 /* Mobile view */
@@ -187,24 +215,33 @@ button:active{
     }
 }
 
+@media (min-width: 1280px) {
+
+}
 
 </style>
 
 <body>
 
-    
+    <div class="gif-container">
+        <img src="https://media.tenor.com/lNtmoshuUI8AAAAi/bahroo-hacker.gif" alt="Hacker Panda" class="hacker-panda">
+        <img src="https://media.tenor.com/qSOtbE6FekgAAAAi/dance-panda.gif" alt="Dance Panda" class="dance-panda">
+    </div>
 
     <div id="calculator">
+
 
         <div class="input-display">
             <input id="display" placeholder="0" readonly>
         </div>
 
         <div id="keys">
-            <button onclick="showHistory()" class="operator-btn">H</button>
-            <button onclick="appendToDisplay('%')" class="operator-btn">%</button>
+            <button onclick="showHistory()" class="operator-btn"><i class="fa fa-history" aria-hidden="true"></i>
+            </button>
+            <button onclick="appendToDisplay('%')" class="operator-btn" >%</button>
             <button onclick="clearDisplay()" class="operator-btn">C</button>
-            <button onclick="deleteDisplay()" class="operator-btn">D</button>
+            <button onclick="deleteDisplay()" class="operator-btn"><i class="fa fa-undo" aria-hidden="true"></i>
+            </button>
             <button onclick="appendToDisplay('7')">7</button>
             <button onclick="appendToDisplay('8')">8</button>
             <button onclick="appendToDisplay('9')">9</button> 
@@ -218,7 +255,7 @@ button:active{
             <button onclick="appendToDisplay('3')">3</button>
             <button onclick="appendToDisplay('-')" class="operator-btn">-</button>
             <button onclick="appendToDisplay('0')" >0</button>
-            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="appendToDisplay('.')" >.</button>
             <button onclick="calculate()" class="operator-btn">=</button>
             <button onclick="appendToDisplay('+')" class="operator-btn">+</button>
 
@@ -234,11 +271,6 @@ button:active{
 
         
     </div>
-
-    
-
-    
-    
 
     <div class="circle"></div>
     <div class="circle"></div>
