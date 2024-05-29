@@ -23,7 +23,9 @@ body{
 #calculator{
     background-color: hsl(0, 0%, 15%);
     border-radius: 15px;
-    max-width: 500px;
+    max-width: 800px;
+    max-height: 800px;
+    height: 100%;
     overflow: hidden;
     width: 100%;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -49,13 +51,13 @@ body{
 #keys{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    padding: 20px;
+    gap: 30px;
+    padding: 25px;
     box-sizing: border-box;
 }
 
 button{
-    width: 100px;
+    width: 150px;
     height: 100px;
     border-radius: 50px;
     border: none;
@@ -89,21 +91,6 @@ button:active{
     background-color: hsl(35, 100%, 75%);
 }
 
-.plus-btn {
-    grid-row: span 2;
-    height: 130px;
-    line-height: 2.5rem;
-    font-family: 'Pixelify Sans', sans-serif;
-    background-color: hsl(35, 100%, 55%);
-}
-
-.plus-btn:hover{
-    background-color: hsl(35, 100%, 65%);
-}
-
-.plus-btn:active{
-    background-color: hsl(35, 100%, 75%);
-}
 
 /* Mobile view */
 @media (max-width: 600px) {
@@ -140,13 +127,7 @@ button:active{
 
 /* Desktop view */
 @media (min-width: 901px) {
-    #display {
-        font-size: 3.5rem;
-    }
-
-    button {
-        font-size: 3rem;
-    }
+    
 }
 
 .circle{
@@ -160,40 +141,82 @@ button:active{
     pointer-events: none;
 }
 
+.history {
+    position: absolute;
+    background-color: hsl(0, 0%, 15%);
+    border-radius: 15px;
+    max-width: 550px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: none;
+    color: white;
+    text-align: center;
+    height: 100%;
+    max-height: 500px;
+    left: 780px;
+    font-size: 1.5em;
+}
+
+.history.show {
+    display: block;
+}
+
+.historylist{
+    font-size: 2em;
+}
+
 
 </style>
 
 <body>
 
+    
 
     <div id="calculator">
+
         <div class="input-display">
-            <input id="display" readonly>
+            <input id="display" placeholder="0" readonly>
         </div>
-        
+
         <div id="keys">
-            <button onclick="clearDisplay()" class="operator-btn">AC</button>
-            <button onclick="deleteDisplay()" class="operator-btn">DE</button>
+            <button onclick="showHistory()" class="operator-btn">H</button>
             <button onclick="appendToDisplay('%')" class="operator-btn">%</button>
-            <button onclick="appendToDisplay('/')" class="operator-btn">/</button>
+            <button onclick="clearDisplay()" class="operator-btn">C</button>
+            <button onclick="deleteDisplay()" class="operator-btn">D</button>
             <button onclick="appendToDisplay('7')">7</button>
             <button onclick="appendToDisplay('8')">8</button>
             <button onclick="appendToDisplay('9')">9</button> 
-            <button onclick="appendToDisplay('*')" class="operator-btn">*</button> 
+            <button onclick="appendToDisplay('/')" class="operator-btn">/</button> 
             <button onclick="appendToDisplay('4')">4</button>
             <button onclick="appendToDisplay('5')">5</button>
             <button onclick="appendToDisplay('6')">6</button>
-            <button onclick="appendToDisplay('-')" class="operator-btn">-</button>
+            <button onclick="appendToDisplay('*')" class="operator-btn">*</button>            
             <button onclick="appendToDisplay('1')">1</button>
             <button onclick="appendToDisplay('2')">2</button>
             <button onclick="appendToDisplay('3')">3</button>
-            <button onclick="appendToDisplay('+')" class="plus-btn">+</button>
+            <button onclick="appendToDisplay('-')" class="operator-btn">-</button>
             <button onclick="appendToDisplay('0')" >0</button>
             <button onclick="appendToDisplay('.')">.</button>
             <button onclick="calculate()" class="operator-btn">=</button>
-        
+            <button onclick="appendToDisplay('+')" class="operator-btn">+</button>
+
+            <div class="history">
+                <h1>History</h1>
+                <hr>
+                <ul id="historyList" class="historylist"></ul>
+            </div>
+
         </div>
+
+        
+
+        
     </div>
+
+    
+
+    
+    
 
     <div class="circle"></div>
     <div class="circle"></div>
@@ -213,7 +236,9 @@ button:active{
         const display = document.getElementById("display");
         const coords = { x:0, y:0};
         const circles = document.querySelectorAll(".circle");
+        let currentExpression = '';
 
+    
         circles.forEach(function (circle){
             circle.x = 0;
             circle.y = 0;
@@ -251,32 +276,49 @@ button:active{
 
         animateCircles();
 
-        function appendToDisplay(input){
+       
+        function appendToDisplay(input) {
+            const display = document.getElementById('display');
             display.value += input;
-
+            currentExpression += input;
         }
 
-        function clearDisplay(){
+        function clearDisplay() {
+            const display = document.getElementById('display');
             display.value = "";
+            display.placeholder = '0';
+            currentExpression = '';
         }
 
-        function calculate(){
-            try{
-                display.value = eval(display.value)
-            }
-            catch(error){
+        function calculate() {
+            const display = document.getElementById('display');
+            try {
+                const result = eval(display.value);
+                const fullExpression = display.value;
+                display.value = result;
+
+                const historyList = document.getElementById('historyList');
+                const listItem = document.createElement('li');
+                listItem.textContent = `${fullExpression} =  ${result}`;
+                historyList.appendChild(listItem);
+
+                currentExpression = '';
+            } catch (error) {
                 display.value = "Error";
+                currentExpression = '';
             }
         }
 
-        function deleteDisplay(){
+        function deleteDisplay() {
+            const display = document.getElementById('display');
             display.value = display.value.slice(0, -1);
+            currentExpression = currentExpression.slice(0, -1);
         }
 
-        
-
-        
-
+        function showHistory() {
+            const historySection = document.querySelector('.history');
+            historySection.classList.toggle('show');
+        }
 
     </script>
 
